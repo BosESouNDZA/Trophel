@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1079209986340-f2heij74cotsar22emnd1u7lqgjt599g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bhurivatmontri.trophel",
+            "certificate_hash": "0f68c6a6d8e0dc2e17f732beada0d6c97c794905"
+          }
+        },
+        {
           "client_id": "1079209986340-mijard4rktesaeu5fumi1d9vh7e54t60.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

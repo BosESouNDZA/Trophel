@@ -11,7 +11,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.bhurivatmontri.trophel.ActProfile;
+import com.example.bhurivatmontri.trophel.Login;
 import com.example.bhurivatmontri.trophel.R;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 /**
@@ -69,7 +74,22 @@ public class AppMenu extends Fragment implements View.OnClickListener{
             case R.id.menu_about_us:
                 break;
             case R.id.menu_logout:
+                Logout();
                 break;
         }
     }
+    public void Logout() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignIn.getClient(this.getActivity(), gso).signOut();
+        GoogleSignIn.getClient(this.getActivity(), gso).revokeAccess();
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
+        Intent intent = new Intent(getActivity(), Login.class);
+        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_CLEAR_TASK | intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
 }

@@ -203,7 +203,6 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
                             for (DataSnapshot snapshot2 : snapshot1.child("sub_Attrs").getChildren()){
                                 snapshot2.child("latitude").getValue(Integer.class);
                                 Log.d("onDataChange","qqqqqqqqq"+snapshot2.getKey().toString());
-
                                 Double Olat = Math.toRadians(latitude) - Math.toRadians(snapshot2.child("latitude").getValue(Double.class));
                                 Double Olong = Math.toRadians(longitude) - Math.toRadians(snapshot2.child("longitude").getValue(Double.class));
                                 Double a = Math.pow((Math.sin(Olat / 2)), 2) + (Math.cos(Math.toRadians(snapshot2.child("latitude").getValue(Double.class))) * Math.cos(Math.toRadians(latitude)) * Math.pow(Math.sin(Olong / 2), 2));

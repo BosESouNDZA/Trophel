@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +17,8 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +64,8 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
 
     private static final String TAG = "OpenCVCamera";
     private static final String AsyncTAG = "AsyncTAG";
+    private ImageView image;
+    private String fullScreenInd;
     private CameraBridgeViewBase cameraBridgeViewBase;
     Mat rgba,rgbaT,rgbaF;
     private int w, h;
@@ -119,6 +125,7 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         switch (title){
             case "รูปปั้นอนุสาวรีย์สามกษัตริย์" : istr = assetManager.open("อนุสาวรีย์3กษัตริย์.JPG"); break;
             case "ตึก 30 ปี" : istr = assetManager.open("CPE CMU.jpg"); break;
+            case "ป้ายทางเข้าพิพิธภัณฑ์" : istr = assetManager.open("ศาลาธนารักษ์.JPG"); break;
             default: istr = assetManager.open("temple_icon");break;
         }
         //InputStream istr = assetManager.open("temple02_1.JPG");
@@ -153,7 +160,12 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},0);
         }
-
+        image = findViewById(R.id.image);
+       // image.setImageResource(R.drawable.att_angkhang);
+        //image.setImageBitmap(ImageViaAssets("CPE CMU.jpg"));
+        image.setImageBitmap(rotateImage(
+                BitmapFactory.decodeResource(getResources(),
+                        R.drawable.att_angkhang), 90));
         cameraBridgeViewBase = (CameraBridgeViewBase) findViewById(R.id.camera1);
         cameraBridgeViewBase.setVisibility(SurfaceView.VISIBLE);
         cameraBridgeViewBase.setCvCameraViewListener(this);
@@ -163,7 +175,13 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         ib_success = (ImageButton) findViewById(R.id.ib_camera_success);
         Log.d(TAG,"onCreate passed successfully");
     }
-
+    public Bitmap rotateImage(Bitmap src, float degree) {
+        // Matrix
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        return Bitmap.createBitmap(src, 0, 0, src.getWidth(),
+                src.getHeight(), matrix, true);
+    }
     @Override
     protected void onPause(){
         super.onPause();
